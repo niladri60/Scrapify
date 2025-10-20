@@ -1,7 +1,7 @@
 {
     "brave_path": "PATH_TO_YOUR_BRAVE_BROWSER",
     "chromedriver_path": "PATH_TO_YOUR_CHROMEDRIVER",
-    "search_query": "laptops",
-    "num_pages": 5,
-    "output_file": "amazon_products.csv"
+    "search_query": "laptop",
+    "num_pages": 10,
+    "output_file": "output.csv"
 }
