@@ -5,24 +5,31 @@ from bs4 import BeautifulSoup
 import pandas as pd
 import time
 import random
+import json
+import os
 
-# -------------------- PATHS --------------------
-# ✅ Path to Brave browser executable
-BRAVE_PATH = r"C:\Program Files\BraveSoftware\Brave-Browser\Application\brave.exe"
+# -------------------- LOAD CONFIG --------------------
+CONFIG_FILE = "config.json"
 
-# ✅ Path to ChromeDriver executable (not Brave)
-# Example: if you downloaded chromedriver-win64.zip from Google Chrome Labs
-CHROMEDRIVER_PATH = r"C:\Users\Niladri\Downloads\chromedriver-win64\chromedriver-win64\chromedriver.exe"
+if not os.path.exists(CONFIG_FILE):
+    raise FileNotFoundError(f"{CONFIG_FILE} not found. Please create it with required settings.")
 
-# -------------------- CONFIGURATION --------------------
-SEARCH_QUERY = "laptops"    # what to search
-NUM_PAGES = 2               # number of pages
-OUTPUT_FILE = "amazon_products.csv"
+with open(CONFIG_FILE, "r") as f:
+    config = json.load(f)
+
+BRAVE_PATH = config.get("brave_path")
+CHROMEDRIVER_PATH = config.get("chromedriver_path")
+SEARCH_QUERY = config.get("search_query", "laptops")
+NUM_PAGES = config.get("num_pages", 5)
+OUTPUT_FILE = config.get("output_file", "amazon_products.csv")
+
+if not BRAVE_PATH or not CHROMEDRIVER_PATH:
+    raise ValueError("Please provide valid paths for Brave and ChromeDriver in config.json")
 
 # -------------------- SETUP SELENIUM --------------------
 options = Options()
 options.binary_location = BRAVE_PATH
-options.add_argument("--headless")  # 👈 run Brave in background (no UI)
+options.add_argument("--headless")
 options.add_argument("--no-sandbox")
 options.add_argument("--disable-dev-shm-usage")
 options.add_argument("--disable-blink-features=AutomationControlled")
@@ -45,26 +52,21 @@ for page in range(1, NUM_PAGES + 1):
     url = f"https://www.amazon.in/s?k={SEARCH_QUERY}&page={page}"
     driver.get(url)
     
-    # wait for content to load
     time.sleep(random.uniform(3, 6))
     
-    # scroll to load dynamic content
     for _ in range(3):
         driver.execute_script("window.scrollBy(0, document.body.scrollHeight / 3);")
         time.sleep(1)
     
-    # parse HTML with BeautifulSoup
     soup = BeautifulSoup(driver.page_source, "html.parser")
     
-    # extract product data
     for item in soup.find_all("div", {"data-component-type": "s-search-result"}):
         name_tag = item.h2
         name = name_tag.text.strip() if name_tag else None
+        
         link_tag = item.find("a", class_="a-link-normal s-no-outline")
         link = "https://www.amazon.in" + link_tag.get("href") if link_tag else None
-
         
-
         price_whole = item.find("span", class_="a-price-whole")
         price_fraction = item.find("span", class_="a-price-fraction")
         price = None
@@ -74,7 +76,7 @@ for page in range(1, NUM_PAGES + 1):
                 price += "." + price_fraction.text
         
         brand = name.split()[0] if name else None
-
+        
         if name and price:
             products.append({
                 "Brand": brand,
