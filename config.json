@@ -2,7 +2,7 @@
     "chrome_path": "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "chromedriver_path": "D:\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe",
     "search_query": "laptops",
-    "num_pages": 3,
+    "num_pages": 2,
     "output_file": "multi_site_products.csv",
     "sites": ["amazon", "flipkart", "croma", "reliance_digital"]
 }
