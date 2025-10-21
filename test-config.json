@@ -1,8 +1,8 @@
 {
-    "brave_path": "C:\\Program Files\\BraveSoftware\\Brave-Browser\\Application\\brave.exe",
-    "chromedriver_path": "C:\\Users\\Niladri\\Downloads\\chromedriver-win64\\chromedriver-win64\\chromedriver.exe",
-    "search_query": "laptops",
-    "num_pages": 3,
-    "output_file": "multi_site_products.csv",
-    "sites": ["amazon", "flipkart", "croma", "reliance_digital"]
+  "chrome_path": "PATH_TO_YOUR_BRAVE_BROWSER",
+  "chromedriver_path": "PATH_TO_YOUR_CHROMEDRIVER",
+  "search_query": "laptops",
+  "num_pages": 3,
+  "output_file": "multi_site_products.csv",
+  "sites": ["amazon", "flipkart", "croma", "reliance_digital"]
 }
