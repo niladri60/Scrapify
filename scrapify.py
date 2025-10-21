@@ -8,9 +8,6 @@ import time
 
 # Import scrapers
 from scrapers.amazon_scraper import scrape_amazon
-from scrapers.flipkart_scraper import scrape_flipkart
-from scrapers.croma_scraper import scrape_croma
-from scrapers.reliance_scraper import scrape_reliance
 
 # -------------------- LOAD CONFIG --------------------
 CONFIG_FILE = "config.json"
@@ -56,15 +53,6 @@ all_products = []
 try:
     if "amazon" in SITES:
         all_products.extend(scrape_amazon(driver, SEARCH_QUERY, NUM_PAGES))
-
-    # if "flipkart" in SITES:
-    #     all_products.extend(scrape_flipkart(driver, SEARCH_QUERY, NUM_PAGES))
-
-    # if "croma" in SITES:
-    #     all_products.extend(scrape_croma(driver, SEARCH_QUERY, NUM_PAGES))
-
-    # if "reliance" in SITES or "reliance_digital" in SITES:
-    #     all_products.extend(scrape_reliance(driver, SEARCH_QUERY, NUM_PAGES))
 
 finally:
     driver.quit()
